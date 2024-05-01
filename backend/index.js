@@ -1,7 +1,7 @@
 import express from "express";
 import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
-import {Employee} from "./models/employeeModel.js";
+import { Employee } from "./models/employeeModel.js";
 
 const app = express();
 
@@ -25,12 +25,32 @@ app.post("/employee", async (req, res) => {
         .status(400)
         .send({ message: "Please fill all required fields." });
     }
-    const newEmployee = ({
+    if (req.body.phone.length !== 10) {
+      return res
+        .status(400)
+        .send({ message: "Phone number must be 10 digits." });
+    }
+
+    // Check if employee with the same email or phone number already exists
+    const existingEmployee = await Employee.findOne({ email: req.body.email });
+    if (existingEmployee) {
+      return res
+        .status(400)
+        .send({ message: "Employee with this email already exists." });
+    }
+    const existingPhone = await Employee.findOne({ phone: req.body.phone });
+    if (existingPhone) {
+      return res
+        .status(400)
+        .send({ message: "Employee with this phone number already exists." });
+    }
+
+    const newEmployee = {
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
       role: req.body.role,
-    });
+    };
 
     const employee = await Employee.create(newEmployee);
 
