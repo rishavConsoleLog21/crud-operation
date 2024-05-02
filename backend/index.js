@@ -61,6 +61,20 @@ app.post("/employee", async (req, res) => {
   }
 });
 
+// Route to get all employees from the database
+app.get("/employee", async (req, res) => {
+  try {
+    const employees = await Employee.find({});
+    return res.status(200).json({
+      count: employees.length,
+      data: employees,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
 mongoose
   .connect(mongoDBURL)
   .then(() => {
