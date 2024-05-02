@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 });
 
 // Routes to save a new employee
-app.post("/employee", async (req, res) => {
+app.post("/employees", async (req, res) => {
   try {
     if (
       !req.body.name ||
@@ -62,7 +62,7 @@ app.post("/employee", async (req, res) => {
 });
 
 // Route to get all employees from the database
-app.get("/employee", async (req, res) => {
+app.get("/employees", async (req, res) => {
   try {
     const employees = await Employee.find({});
     return res.status(200).json({
