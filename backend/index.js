@@ -96,6 +96,38 @@ app.get("/employees/:id", async (req, res) => {
   }
 });
 
+// Route to update an employee
+app.put("/employees/:id", async (req, res) => {
+  try {
+    if (
+      !req.body.name ||
+      !req.body.email ||
+      !req.body.phone ||
+      !req.body.designation ||
+      !req.body.gender ||
+      !req.body.course ||
+      !req.body.image
+    ) {
+      return res
+        .status(400)
+        .send({ message: "All the field should be filled" });
+    }
+
+    const { id } = req.params;
+
+    const result = await Employee.findByIdAndUpdate(id, req.body);
+
+    if (!result) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    return res.status(200).json({ message: "Employee updated successfully" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
 mongoose
   .connect(mongoDBURL)
   .then(() => {
