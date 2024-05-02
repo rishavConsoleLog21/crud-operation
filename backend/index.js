@@ -8,6 +8,18 @@ const app = express();
 //Middleware for parsing JSON data
 app.use(express.json());
 
+// Middleware for handling CORS
+// Option 1: Allow All Origins with Default of CORS(*)
+// app.use(cors());
+// Option 2: Allow Specific Origin
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET,POST,PUT,DELETE"],
+    allowedHeaders: "Content-Type,Authorization",
+  })
+);
+
 app.get("/", (req, res) => {
   res.send("Welcome to Employee Management System API.");
 });
