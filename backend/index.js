@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Welcome to Employee Management System API.");
 });
 
 // Routes to save a new employee
@@ -19,7 +19,10 @@ app.post("/employees", async (req, res) => {
       !req.body.name ||
       !req.body.email ||
       !req.body.phone ||
-      !req.body.role
+      !req.body.designation ||
+      !req.body.gender ||
+      !req.body.course ||
+      !req.body.image
     ) {
       return res
         .status(400)
@@ -49,7 +52,10 @@ app.post("/employees", async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
-      role: req.body.role,
+      designation: req.body.designation,
+      gender: req.body.gender,
+      course: req.body.course,
+      image: req.body.image,
     };
 
     const employee = await Employee.create(newEmployee);
@@ -69,6 +75,21 @@ app.get("/employees", async (req, res) => {
       count: employees.length,
       data: employees,
     });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// Route to get One employees from the database
+app.get("/employees/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const employee = await Employee.findById(id);
+    if (!employee) {
+      return res.status(404).send({ message: "Employee not found" });
+    }
+    return res.status(200).json(employee);
   } catch (error) {
     console.log(error.message);
     res.status(500).send({ message: error.message });
