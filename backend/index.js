@@ -128,6 +128,22 @@ app.put("/employees/:id", async (req, res) => {
   }
 });
 
+// Route to delete an employee
+app.delete("/employees/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await Employee.findByIdAndDelete(id);
+    if (!result) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    return res.status(200).json({ message: "Employee deleted successfully" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: error.message });
+  }
+});
+
 mongoose
   .connect(mongoDBURL)
   .then(() => {
