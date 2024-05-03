@@ -1,10 +1,10 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
-import CreateEmployee from "./components/CreateEmployee";
-import ShowEmployee from "./components/ShowEmployee";
-import EditEmployee from "./components/EditEmployee";
-import DeleteEmployee from "./components/DeleteEmployee";
+import Home from "./pages/Home";
+import CreateEmployee from "./pages/CreateEmployee";
+import ShowEmployee from "./pages/ShowEmployee";
+import EditEmployee from "./pages/EditEmployee";
+import DeleteEmployee from "./pages/DeleteEmployee";
 
 function App() {
   return (
