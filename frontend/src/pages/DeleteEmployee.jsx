@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import BackButton from "../components/BackButton";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const DeleteEmployee = () => {
   const navigate = useNavigate();
@@ -15,6 +17,7 @@ const DeleteEmployee = () => {
       .delete(`http://localhost:5555/employees/${id}`)
       .then(() => {
         setLoading(false);
+        toast.success("Employee deleted successfully");
         navigate("/");
       })
       .catch((err) => {

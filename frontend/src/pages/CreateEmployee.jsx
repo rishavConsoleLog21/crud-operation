@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const CreateEmployee = () => {
   const navigate = useNavigate();
@@ -44,6 +46,7 @@ const CreateEmployee = () => {
       .post("http://localhost:5555/employees", data)
       .then(() => {
         setLoading(false);
+        toast.success("Employee added successfully");
         navigate("/");
       })
       .catch((err) => {
