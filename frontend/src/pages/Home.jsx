@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
 import { MdOutlineAddBox, MdOutlineDelete } from "react-icons/md";
+import Navbar from "../components/Navbar";
 
 const Home = () => {
   const [employees, setEmployees] = useState([]);
@@ -64,6 +65,7 @@ const Home = () => {
 
   return (
     <div className="p-4">
+      <Navbar />
       <div className="flex justify-between items-center bg-slate-100 mb-2">
         <h1 className="text-3xl my-8">Employee Lists</h1>
         <h2 className="text-xl text-blue-600 my-8">
@@ -108,7 +110,10 @@ const Home = () => {
               >
                 Name
               </th>
-              <th onClick={() => sorting("email")} className="border border-slate-600 rounded-md max-md:hidden">
+              <th
+                onClick={() => sorting("email")}
+                className="border border-slate-600 rounded-md max-md:hidden"
+              >
                 Email Id
               </th>
               <th className="border border-slate-600 rounded-md max-md:hidden">
@@ -123,7 +128,10 @@ const Home = () => {
               <th className="border border-slate-600 rounded-md max-md:hidden">
                 Course
               </th>
-              <th onClick={() => sorting("createdAt")} className="border border-slate-600 rounded-md max-md:hidden">
+              <th
+                onClick={() => sorting("createdAt")}
+                className="border border-slate-600 rounded-md max-md:hidden"
+              >
                 Created At
               </th>
               <th className="border border-slate-600 rounded-md max-md:hidden">
