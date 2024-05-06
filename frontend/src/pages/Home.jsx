@@ -9,6 +9,10 @@ import { MdOutlineAddBox, MdOutlineDelete } from "react-icons/md";
 const Home = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(2); // Change items per page as per your requirement
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     setLoading(true);
@@ -24,12 +28,46 @@ const Home = () => {
       });
   }, []);
 
+  // Sorting
+  const sorting = (col) => {
+    if (sortOrder === "asc") {
+      const sortedEmployees = [...employees].sort((a, b) =>
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+      );
+      setEmployees(sortedEmployees);
+      setSortOrder("desc");
+    }
+    if (sortOrder === "desc") {
+      const sortedEmployees = [...employees].sort((a, b) =>
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+      );
+      setEmployees(sortedEmployees);
+      setSortOrder("asc");
+    }
+  };
+
+  // Filter employees based on search query
+  const filteredEmployees = employees.filter((employee) =>
+    employee.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentEmployees = filteredEmployees.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="p-4">
       <div className="flex justify-between items-center bg-slate-100 mb-2">
         <h1 className="text-3xl my-8">Employee Lists</h1>
         <h2 className="text-xl text-blue-600 my-8">
-          Total Employees: {employees.length}
+          Total Employees: {filteredEmployees.length}
         </h2>
         <Link to="/employees/create">
           <MdOutlineAddBox className="text-4xl text-emerald-600" />
@@ -40,6 +78,8 @@ const Home = () => {
           type="text"
           placeholder="Search Employee"
           className="p-2 border border-slate-600 rounded-md"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button className="bg-blue-600 text-white p-2 rounded-md">
           Search
@@ -53,14 +93,22 @@ const Home = () => {
         <table className="w-full border-separate border-spacing-2">
           <thead>
             <tr className="bg-slate-300">
-              <th className="border border-slate-600 rounded-md">Unique ID</th>
+              <th
+                onClick={() => sorting("_id")}
+                className="border border-slate-600 rounded-md"
+              >
+                Unique ID
+              </th>
               <th className="border border-slate-600 rounded-md max-md:hidden">
                 Image
               </th>
-              <th className="border border-slate-600 rounded-md max-md:hidden">
+              <th
+                onClick={() => sorting("name")}
+                className="border border-slate-600 rounded-md max-md:hidden"
+              >
                 Name
               </th>
-              <th className="border border-slate-600 rounded-md max-md:hidden">
+              <th onClick={() => sorting("email")} className="border border-slate-600 rounded-md max-md:hidden">
                 Email Id
               </th>
               <th className="border border-slate-600 rounded-md max-md:hidden">
@@ -75,7 +123,7 @@ const Home = () => {
               <th className="border border-slate-600 rounded-md max-md:hidden">
                 Course
               </th>
-              <th className="border border-slate-600 rounded-md max-md:hidden">
+              <th onClick={() => sorting("createdAt")} className="border border-slate-600 rounded-md max-md:hidden">
                 Created At
               </th>
               <th className="border border-slate-600 rounded-md max-md:hidden">
@@ -84,7 +132,7 @@ const Home = () => {
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee, index) => (
+            {currentEmployees.map((employee, index) => (
               <tr key={employee._id}>
                 <td className="border border-slate-700 rounded-md max-md:hidden py-2">
                   {employee._id}
@@ -135,6 +183,22 @@ const Home = () => {
           </tbody>
         </table>
       )}
+      {/* Pagination */}
+      <ul className="flex justify-center mt-4">
+        {Array.from(
+          { length: Math.ceil(filteredEmployees.length / itemsPerPage) },
+          (_, i) => (
+            <li key={i} className="mx-1">
+              <button
+                className="bg-blue-500 text-white px-3 py-1 rounded-md"
+                onClick={() => paginate(i + 1)}
+              >
+                {i + 1}
+              </button>
+            </li>
+          )
+        )}
+      </ul>
     </div>
   );
 };
