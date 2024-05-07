@@ -1,7 +1,13 @@
 import express from "express";
 import { Employee } from "../models/employeeModel.js";
-
+import { Signup, Login } from "../controllers/authController.js";
 const router = express.Router();
+
+// Signup Route
+router.post("/signup", Signup);
+
+// Login Route
+router.post("/login", Login);
 
 // Routes to save/create a new employee
 router.post("", async (req, res) => {
