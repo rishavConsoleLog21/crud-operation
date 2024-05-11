@@ -64,10 +64,13 @@ const Home = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="p-4">
+    <div className="min-h-screen gap-4">
       <Navbar />
-      <div className="flex justify-between items-center bg-slate-100 mb-2">
-        <h1 className="text-3xl my-8">Employee Lists</h1>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl py-4 text-blue-600 text-center font-bold uppercase tracking-wider"
+        >
+          Employee Lists
+        </h1>
         <h2 className="text-xl text-blue-600 my-8">
           Total Employees: {filteredEmployees.length}
         </h2>
